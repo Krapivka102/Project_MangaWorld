@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField('Название жанра', max_length=50)
 
     class Meta:
         verbose_name = 'Жанр'
@@ -13,7 +13,7 @@ class Genre(models.Model):
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField('Имя автора', max_length=100)
 
     class Meta:
         verbose_name = 'Автор'
@@ -24,7 +24,7 @@ class Author(models.Model):
 
 
 class Artist(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField('Имя художника', max_length=100)
 
     class Meta:
         verbose_name = 'Художник'
@@ -35,15 +35,16 @@ class Artist(models.Model):
 
 
 class Manga(models.Model):
-    title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='manga_images/')
-    release_year = models.IntegerField()
-    genres = models.ManyToManyField(Genre, related_name='mangas')
-    status_title = models.CharField(max_length=50)
-    status_translation = models.CharField(max_length=50)
-    authors = models.ManyToManyField(Author, related_name='mangas')
-    artists = models.ManyToManyField(Artist, related_name='mangas')
-    uploaded_chapters = models.IntegerField(default=0)
+    title = models.CharField('Название', max_length=200)
+    description = models.TextField('Описание', blank=True)
+    photo = models.ImageField(upload_to='manga_images/')
+    release_year = models.IntegerField('Год создания')
+    genres = models.ManyToManyField(Genre, verbose_name='Жанр')
+    status_title = models.CharField('Статус выпуска', max_length=50)
+    status_translation = models.CharField('Статус перевода', max_length=50)
+    authors = models.ManyToManyField(Author, verbose_name='Автор')
+    artists = models.ManyToManyField(Artist, verbose_name='Художник')
+    uploaded_chapters = models.IntegerField('Количество глав',default=0)
 
     class Meta:
         verbose_name = 'Манга'
@@ -55,7 +56,7 @@ class Manga(models.Model):
 
 class Chapter(models.Model):
     manga = models.ForeignKey(Manga, on_delete=models.CASCADE, related_name='chapters')
-    pages_count = models.IntegerField()
+    pages_count = models.IntegerField('Количество страниц')
     file = models.FileField(upload_to='chapters/')
 
     class Meta:

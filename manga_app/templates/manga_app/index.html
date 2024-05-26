@@ -1,5 +1,39 @@
 {% extends 'base.html' %}
 
+{% block sidebar %}
+    <div class="container mt-5">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+        <div class="mb-3">
+            <label for="genreFilter" class="form-label">Жанр:</label>
+            <select class="form-select" id="genreFilter">
+                <option selected>Выберите жанр...</option>
+                <!-- Здесь будут опции жанров -->
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="nameFilter" class="form-label">Название:</label>
+            <input type="text" class="form-control" id="nameFilter" placeholder="Введите название...">
+        </div>
+        <button type="submit" class="btn btn-primary" >Фильтровать</button>
+    </div>
+    </div>
+{% endblock %}
+
 {% block content %}
-<h1>Основной контент</h1>
+    <div class="container mt-5">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Карточки манг будут добавляться здесь динамически -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="#" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Название манги</h5>
+                        <p class="card-text">Описание манги.</p>
+                        <a href="#" class="btn btn-primary">Читать</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Повторите для каждой манги -->
+        </div>
+    </div>
 {% endblock %}

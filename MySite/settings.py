@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'manga_app.apps.MangaAppConfig',
+    'django_filters',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [
