@@ -64,7 +64,7 @@ class Chapter(models.Model):
     manga = models.ForeignKey(Manga, on_delete=models.CASCADE, related_name='chapters')
     name = models.CharField('Название главы', max_length=200, blank=True, null=True)
     pages_count = models.IntegerField('Количество страниц')
-    file = models.FileField(upload_to='chapters/')
+    file = models.FileField('Pdf файл главы', upload_to='chapters/')
 
     class Meta:
         verbose_name = 'Глава'

@@ -12,15 +12,17 @@
 
         <div class="col-md-3 text-end">
             {% if user.is_authenticated %}
-                <p class="mb-0">
-            {{ user.username }} |
-            <a href="{% url 'users:logout' %}" class="text-decoration-none">Выйти</a>
-        </p>
+                <ul class="nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">
+                    <li><a href="{% url 'users:profile' %}" class="nav-link px-2 link-dark">{{ user.username }}</a></li>
+                    <li><a href="{% url 'users:logout' %}" class="nav-link px-2 link-dark">Выйти</a></li>
+                </ul>
             {% else %}
                 <button type="button" class="btn btn-outline-primary me-2"
                         onclick="window.location.href='{% url 'users:login' %}';">Войти
                 </button>
-                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                <button type="button" class="btn btn-primary"
+                        onclick="window.location.href='{% url 'users:register' %}';">Зарегистрироваться
+                </button>
             {% endif %}
         </div>
     </header>

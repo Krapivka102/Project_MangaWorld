@@ -1,8 +1,10 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from . import models, filters
 from django.views import View
-from.forms import AddChapterForm
+from .forms import AddChapterForm
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
 from django.db.models import Count
@@ -28,18 +30,33 @@ class MangaList(ListView):
         return context
 
 
-class AddChapterView(View):
+class AddChapterView(LoginRequiredMixin, CreateView):
     form_class = AddChapterForm
     template_name = 'manga_app/addChapter.html'
     success_url = reverse_lazy('home')
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+class UpdateChapter(LoginRequiredMixin, UpdateView):
+    model = models.Chapter
+    fields = '__all__'
+    template_name = 'manga_app/addChapter.html'
+    success_url = reverse_lazy('home')
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect(self.success_url)
-        return render(request, self.template_name, {'form': form})
+
+
+# class AddChapterView(View):
+#     form_class = AddChapterForm
+#     template_name = 'manga_app/addChapter.html'
+#     success_url = reverse_lazy('home')
+#
+#
+#     def get(self, request, *args, **kwargs):
+#         form = self.form_class()
+#         return render(request, self.template_name, {'form': form})
+#
+#
+#     def post(self, request, *args, **kwargs):
+#         form = self.form_class(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect(self.success_url)
+#         return render(request, self.template_name, {'form': form})
