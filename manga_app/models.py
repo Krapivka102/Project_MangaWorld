@@ -40,8 +40,14 @@ class Manga(models.Model):
     photo = models.ImageField(upload_to='manga_images/')
     release_year = models.IntegerField('Год создания')
     genres = models.ManyToManyField(Genre, verbose_name='Жанр')
-    status_title = models.CharField('Статус выпуска', max_length=50)
-    status_translation = models.CharField('Статус перевода', max_length=50)
+    status_title = models.CharField('Статус выпуска', max_length=50, choices=[
+        ('ongoing', 'Продолжается'),
+        ('completed', 'Завершен'),
+    ])
+    status_translation = models.CharField('Статус перевода', max_length=50, choices=[
+        ('ongoing', 'Продолжается'),
+        ('completed', 'Завершен'),
+    ])
     authors = models.ManyToManyField(Author, verbose_name='Автор')
     artists = models.ManyToManyField(Artist, verbose_name='Художник')
     uploaded_chapters = models.IntegerField('Количество глав',default=0)
@@ -56,6 +62,7 @@ class Manga(models.Model):
 
 class Chapter(models.Model):
     manga = models.ForeignKey(Manga, on_delete=models.CASCADE, related_name='chapters')
+    name = models.CharField('Название главы', max_length=200, blank=True, null=True)
     pages_count = models.IntegerField('Количество страниц')
     file = models.FileField(upload_to='chapters/')
 

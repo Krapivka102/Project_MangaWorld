@@ -19,12 +19,19 @@
 </head>
 <body>
 {% include 'inc/_navbar.html' %}
-
-{% block sidebar %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-start">
+        <div class="col-md-3">
+            {% block sidebar %}
+            {% endblock %}
+        </div>
+        <div class="col-md-9">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+{% block navigation %}
 {% endblock %}
-
-{% block content %}
-{% endblock %}
-
+</div>
 </body>
 </html>

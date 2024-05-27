@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'manga_app.apps.MangaAppConfig',
     'django_filters',
     'bootstrap5',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [

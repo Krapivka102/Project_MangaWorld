@@ -1,39 +1,52 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
+
 
 {% block sidebar %}
-    <div class="container mt-5">
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+    <div style="width: 50%; margin-top: 20px;">
+
         <div class="mb-3">
-            <label for="genreFilter" class="form-label">Жанр:</label>
-            <select class="form-select" id="genreFilter">
-                <option selected>Выберите жанр...</option>
-                <!-- Здесь будут опции жанров -->
-            </select>
+            <form method="get">
+                {% csrf_token %}
+                {{ filters.form.as_p }}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">Поиск</button>
+                {% endbuttons %}
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="nameFilter" class="form-label">Название:</label>
-            <input type="text" class="form-control" id="nameFilter" placeholder="Введите название...">
-        </div>
-        <button type="submit" class="btn btn-primary" >Фильтровать</button>
-    </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <!-- Карточки манг будут добавляться здесь динамически -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for manga in mangas %}
             <div class="col">
                 <div class="card h-100">
-                    <img src="#" class="card-img-top" alt="...">
+                    <img src="{{ manga.photo.url }}" class="card-img-top" alt="{{ manga.title }}">
                     <div class="card-body">
-                        <h5 class="card-title">Название манги</h5>
-                        <p class="card-text">Описание манги.</p>
+                        <h5 class="card-title">{{ manga.title }}</h5>
+                        <p class="card-text">Год выпуска: {{ manga.release_year }}</p>
+                        <p class="card-text">Жанры:
+                            {% for genre in manga.genres.all %}{{ genre.name }}{% if not loop.last %},
+                            {% endif %}{% endfor %}</p>
+                        <p class="card-text">Статус выпуска: {% if manga.status_title == 'ongoing' %}
+                            Продолжается{% elif manga.status_title == 'completed' %}Завершен{% endif %}</p>
+                        <p class="card-text">Статус перевода: {% if manga.status_translation == 'ongoing' %}
+                            Продолжается{% elif manga.status_translation == 'completed' %}Завершен{% endif %}</p>
                         <a href="#" class="btn btn-primary">Читать</a>
                     </div>
                 </div>
             </div>
-            <!-- Повторите для каждой манги -->
-        </div>
+        {% endfor %}
     </div>
+{% endblock %}
+
+{% block navigation %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% for p in paginator.page_range %}
+            <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
 {% endblock %}

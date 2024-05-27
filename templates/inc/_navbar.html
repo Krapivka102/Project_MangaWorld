@@ -6,12 +6,22 @@
         </a>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 link-dark">Главная</a></li>
+            <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Главная</a></li>
+            <li><a href="{% url 'addchapter' %}" class="nav-link px-2 link-dark">Добавить главу</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2">Войти</button>
-            <button type="button" class="btn btn-primary">Зарегистрироваться</button>
+            {% if user.is_authenticated %}
+                <p class="mb-0">
+            {{ user.username }} |
+            <a href="{% url 'users:logout' %}" class="text-decoration-none">Выйти</a>
+        </p>
+            {% else %}
+                <button type="button" class="btn btn-outline-primary me-2"
+                        onclick="window.location.href='{% url 'users:login' %}';">Войти
+                </button>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            {% endif %}
         </div>
     </header>
 </div>
