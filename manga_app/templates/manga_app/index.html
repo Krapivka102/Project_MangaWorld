@@ -3,18 +3,20 @@
 
 
 {% block sidebar %}
-    <div style="width: 50%; margin-top: 20px;">
-
-        <div class="mb-3">
-            <form method="get">
-                {% csrf_token %}
-                {{ filters.form.as_p }}
-                {% buttons %}
-                    <button type="submit" class="btn btn-primary">Поиск</button>
-                {% endbuttons %}
-            </form>
-        </div>
-    </div>
+    <div class="col-md-9 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Фильтры поиска</h5>
+                        <form method="get">
+                            {% csrf_token %}
+                            {{ filters.form.as_p }}
+                            {% buttons %}
+                                <button type="submit" class="btn btn-primary">Поиск</button>
+                            {% endbuttons %}
+                        </form>
+                    </div>
+                </div>
+            </div>
 {% endblock %}
 
 {% block content %}
@@ -22,7 +24,7 @@
         {% for manga in mangas %}
             <div class="col">
                 <div class="card h-100">
-                    <img src="{{ manga.photo.url }}" class="card-img-top" alt="{{ manga.title }}">
+                    <img src="{{ manga.photo.url }}" class="card-img-top" alt="{{ manga.title }} " style="width: 250px; height: 350px;">
                     <div class="card-body">
                         <h5 class="card-title">{{ manga.title }}</h5>
                         <p class="card-text">Год выпуска: {{ manga.release_year }}</p>
@@ -33,7 +35,7 @@
                             Продолжается{% elif manga.status_title == 'completed' %}Завершен{% endif %}</p>
                         <p class="card-text">Статус перевода: {% if manga.status_translation == 'ongoing' %}
                             Продолжается{% elif manga.status_translation == 'completed' %}Завершен{% endif %}</p>
-                        <a href="#" class="btn btn-primary">Читать</a>
+                        <a href="{% url 'manga_detail' manga.id %}" class="btn btn-primary">Читать</a>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,7 @@
+from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 
 
 class Genre(models.Model):
@@ -50,7 +53,7 @@ class Manga(models.Model):
     ])
     authors = models.ManyToManyField(Author, verbose_name='Автор')
     artists = models.ManyToManyField(Artist, verbose_name='Художник')
-    uploaded_chapters = models.IntegerField('Количество глав',default=0)
+    uploaded_chapters = models.IntegerField('Количество глав', default=0)
 
     class Meta:
         verbose_name = 'Манга'
@@ -72,3 +75,27 @@ class Chapter(models.Model):
 
     def __str__(self):
         return self.manga.title
+
+
+@receiver(post_save, sender=Chapter)
+def increment_manga_uploaded_chapters(sender, instance, **kwargs):
+    manga_instance = Manga.objects.get(pk=instance.manga_id)
+    manga_instance.uploaded_chapters += 1
+    manga_instance.save()
+
+
+@receiver(post_delete, sender=Chapter)
+def decrement_manga_uploaded_chapters(sender, instance, **kwargs):
+    manga_instance = Manga.objects.get(pk=instance.manga_id)
+    manga_instance.uploaded_chapters -= 1
+    manga_instance.save()
+
+
+class Comment(models.Model):
+    manga = models.ForeignKey(Manga, related_name='comments', on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField("Комментарий")
+    created_at = models.DateTimeField('Дата создания', auto_now_add=True)
+
+    def __str__(self):
+        return self.text[:20]

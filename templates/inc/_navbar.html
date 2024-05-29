@@ -7,7 +7,10 @@
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Главная</a></li>
+            {% if is_admin %}
             <li><a href="{% url 'addchapter' %}" class="nav-link px-2 link-dark">Добавить главу</a></li>
+            <li><a href="{% url 'addmanga' %}" class="nav-link px-2 link-dark">Добавить мангу</a></li>
+            {% endif %}
         </ul>
 
         <div class="col-md-3 text-end">

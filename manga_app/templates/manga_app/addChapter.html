@@ -2,27 +2,51 @@
 {% load bootstrap5 %}
 
 {% block content %}
-    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-        {% csrf_token %}
-        <div class="container mt-5">
-            <h2>Добавление главы</h2>
-            <div class="mb-3">
-                <label for="{{ form.manga.id_for_label }}" class="form-label">Выберете мангу</label>
-                {{ form.manga }}
+<form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="container mt-5">
+        <h2>Добавление главы</h2>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card mb-3">
+                    <div class="card-header">Выберете мангу</div>
+                    <div class="card-body">
+                        <label for="{{ form.manga.id_for_label }}" class="form-label">{{ form.manga.label }}</label>
+                        {{ form.manga }}
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
-                {{ form.name }}
+            <div class="col-md-9">
+                <div class="card mb-3">
+                    <div class="card-header">Введите название главы</div>
+                    <div class="card-body">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+                        {{ form.name }}
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="{{ form.pages_count.id_for_label }}" class="form-label">{{ form.pages_count.label }}</label>
-                {{ form.pages_count }}
+            <div class="col-md-9">
+                <div class="card mb-3">
+                    <div class="card-header">Количество страниц</div>
+                    <div class="card-body">
+                        <label for="{{ form.pages_count.id_for_label }}" class="form-label">{{ form.pages_count.label }}</label>
+                        {{ form.pages_count }}
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="{{ form.file.id_for_label }}" class="form-label">Загрузите pdf файл главы </label>
-                {{ form.file }}
+            <div class="col-md-9">
+                <div class="card mb-3">
+                    <div class="card-header">Загрузите PDF файл главы</div>
+                    <div class="card-body">
+                        <label for="{{ form.file.id_for_label }}" class="form-label">{{ form.file.label }}</label>
+                        {{ form.file }}
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Отправить</button>
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </div>
         </div>
-    </form>
+    </div>
+</form>
 {% endblock %}
