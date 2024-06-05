@@ -25,7 +25,6 @@ class MangaList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        genre = models.Genre.objects.all()
         context["filters"] = self.get_filters()
         context["is_admin"] = self.request.user.groups.filter(name='Администраторы').exists()
 
@@ -55,6 +54,7 @@ class MangaDetailView(DetailView):
                             pk=self.get_object().pk)
         return render(request, self.template_name, {'form': form})
 
+
 class DownloadChapterView(View):
     def get(self, request, *args, **kwargs):
         chapter_id = kwargs.get('chapter_id')
@@ -62,12 +62,6 @@ class DownloadChapterView(View):
         response = FileResponse(chapter.file.open('rb'))
         response['Content-Disposition'] = f'attachment; filename="{chapter.name}"'
         return response
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        chapters = models.Chapter.objects.filter(manga=self.object.id).order_by('-id')
-        context['chapters'] = chapters
-        return context
 
 
 class AddMangaView(LoginRequiredMixin, CreateView):
@@ -81,12 +75,10 @@ class AddMangaView(LoginRequiredMixin, CreateView):
             return redirect('home')
         return super().dispatch(request, *args, **kwargs)
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_admin'] = self.request.user.groups.filter(name='Администраторы').exists()
         return context
-
 
 
 class AddChapterView(LoginRequiredMixin, CreateView):
@@ -99,7 +91,6 @@ class AddChapterView(LoginRequiredMixin, CreateView):
             return redirect('home')
         return super().dispatch(request, *args, **kwargs)
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_admin'] = self.request.user.groups.filter(name='Администраторы').exists()
@@ -110,11 +101,11 @@ class DeleteChapterView(LoginRequiredMixin, DeleteView):
     model = models.Chapter
     template_name = 'manga_app/delete_chapter.html'
     success_url = reverse_lazy('home')
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='Администраторы').exists():
             return redirect('home')
         return super().dispatch(request, *args, **kwargs)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -156,8 +147,6 @@ class UpdateChapter(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['is_admin'] = self.request.user.groups.filter(name='Администраторы').exists()
         return context
-
-
 
 # class AddChapterView(View):
 #     form_class = AddChapterForm

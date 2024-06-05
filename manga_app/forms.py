@@ -16,17 +16,17 @@ class MangaForm(forms.ModelForm):
     genres = forms.ModelMultipleChoiceField(
         queryset=Genre.objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        required=False,
+        required=True,
     )
     authors = forms.ModelMultipleChoiceField(
         queryset=Author.objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        required=False,
+        required=True,
     )
     artists = forms.ModelMultipleChoiceField(
         queryset=Artist.objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        required=False,
+        required=True,
     )
 
     class Meta:
